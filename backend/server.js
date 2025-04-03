@@ -29,7 +29,7 @@ app.listen(PORT, () => {
 });
 
 // Conectar ao MongoDB
-const mongoURI = 'mongodb+srv://camilgriloramos:activos123@activos.p2xqg.mongodb.net/';
+const mongoURI = 'mongodb+srv://xxxxxxxxxx:xxxxxxxx@activos.p2xqg.mongodb.net/';
 mongoose.connect(mongoURI)
 
 .then(() => {
