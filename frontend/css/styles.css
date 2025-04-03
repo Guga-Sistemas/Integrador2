@@ -1,0 +1,282 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: #f4f4f9;
+    min-height: 100vh; 
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh; 
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; 
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2e47a4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.logo {
+    width: 200px;
+    margin-bottom: 40px;
+}
+
+.nav-menu {
+    width: 100%;
+    font-size: large;
+}
+
+.nav-menu a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 20px;
+    background-color: #2e47a4;
+    margin-bottom: 10px;
+    text-align: left;
+    transition: background-color 0.3s; /* Transição suave */
+}
+
+.nav-menu a:hover {
+    background-color: #1e357a;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2e47a4; /* Adiciona o fundo azul */
+    padding: 15px 20px; /* Ajusta o espaçamento */
+    border-radius: 5px; /* Canto arredondado conforme a imagem */
+}
+
+.header h1 {
+    color: white; /* Texto em branco */
+    margin: 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    color: white; /* Texto em branco */
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.user-icon {
+    font-size: 20px; /* Tamanho do ícone */
+    color: white; /* Cor do ícone */
+    background-color: #2e47a4;
+    padding: 10px;
+    border-radius: 50%; /* Para arredondar o ícone */
+}
+
+.btn-logout {
+    background-color: transparent; /* Fundo transparente */
+    border: none; /* Sem borda */
+    color: #ffffff; /* Cor para destacar */
+    font-size: 0.8rem; /* Tamanho da fonte */
+    cursor: pointer; /* Muda o cursor para pointer */
+    margin-left: 10px; /* Espaço à esquerda */
+}
+
+.btn-logout:hover {
+    text-decoration: underline; /* Adiciona um efeito ao passar o mouse */
+}
+
+.overview {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.card span {
+    font-size: 24px;
+    color: #2e47a4;
+    font-weight: bold;
+}
+
+.manage-equipment, .inventory-history {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.manage-equipment table, .inventory-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.manage-equipment table th, .manage-equipment table td, .inventory-history table th, .inventory-history table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.manage-equipment table th {
+    background-color: #f4f4f9; /* Fundo diferente para cabeçalho */
+}
+
+.add-equipment {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-equipment h2 {
+    color: #2e47a4;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.add-equipment-btn {
+    width: 100%; /* Faz o botão ocupar toda a largura */
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.add-equipment-btn:hover {
+    background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
+
+.details-container {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.asset-details {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.asset-details h2 {
+    color: #2e47a4;
+    margin-bottom: 20px;
+}
+
+.asset-details label {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    display: block;
+}
+
+.asset-details input, .asset-details select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.asset-details .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-edit {
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Tamanho de fonte para botões */
+    font-weight: bold;
+    background-color: #007bff;
+}
+
+.btn-remove {
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Tamanho de fonte para botões */
+    font-weight: bold;
+    background-color: #f44336;
+}
+
+.btn-save {
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Tamanho de fonte para botões */
+    font-weight: bold;
+    background-color: green;
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Equipamentos</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="./img/white.svg">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img src="img/logo-unilever.jpg" alt="Unilever Logo" class="logo">
+            <nav class="nav-menu">
+                <a href="index.html">Página Inicial</a>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+                <h1>Bem-vindo, Gestor!</h1>
+                <div class="user-info">
+                    <span id="user-email">Carregando...</span>
+                    <i class="fas fa-user user-icon"></i>
+                    <button class="btn-logout" onclick="logout()">Sair</button>
+                </div>
+            </header>
+            
+            <section class="overview">
+                <div class="card">Total de Equipamentos <br><span id="total-equipment">0</span></div>
+                <div class="card">Equipamentos em Manutenção <br><span id="equipment-maintenance">0</span></div>
+            </section>
+
+            <section class="manage-equipment">
+                <h2>Gerenciar Equipamentos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome do Ativo</th>
+                            <th>Código QR</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="equipment-table-body">
+                        <!-- Conteúdo da tabela será preenchido dinamicamente -->
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="add-equipment">
+                <h2>Adicionar Equipamento</h2>
+                <form id="add-equipment-form">
+                    <div class="form-group">
+                        <label for="equipment-name">Nome do Equipamento:</label>
+                        <input type="text" id="equipment-name" name="equipment-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="acquisition-date">Data de Aquisição:</label>
+                        <input type="date" id="acquisition-date" name="acquisition-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cost">Custo:</label>
+                        <input type="number" id="cost" name="cost" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="life-expectancy">Expectativa de Vida (anos):</label>
+                        <input type="number" id="life-expectancy" name="life-expectancy" required>
+                    </div>
+                    <button type="submit" class="add-equipment-btn">Adicionar</button>
+                </form>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', async () => {
+                    const email = localStorage.getItem('email') || 'Usuário';
+                    document.getElementById('user-email').textContent = email;
+                    await loadEquipmentData();
+                });
+
+                // Função de logout
+                function logout() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('email');
+                    window.location.href = 'login.html';
+                }
+
+                // Função para carregar os dados de equipamentos e atualizar a interface
+                async function loadEquipmentData() {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        // Se o token não estiver presente, redireciona para a página de login
+                        window.location.href = 'login.html';
+                    }
+
+                    const options = {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    };
+
+                    try {
+                        const equipmentRes = await fetch(`https://assetmanager.vercel.app/api/assets`, options);
+
+                        if (!equipmentRes.ok) {
+                            throw new Error('Erro ao carregar dados');
+                        }
+
+                        const equipmentData = await equipmentRes.json();
+                        document.getElementById('total-equipment').textContent = equipmentData.totalAssets || 0; // Atualiza a contagem total de ativos 
+                        document.getElementById('equipment-maintenance').textContent = equipmentData.inMaintenance || 0; // Atualiza a contagem de ativos em manutenção
+                        
+                        const tableBody = document.getElementById('equipment-table-body');
+                        tableBody.innerHTML = '';
+
+                        equipmentData.assets.forEach(asset => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${asset._id}</td>
+                                <td>${asset.name}</td>
+                                <td><img src="${asset.qrCode}" alt="QR Code" onclick="goToAssetDetails('${asset._id}')" style="cursor:pointer;"></td>
+                                <td>
+                                    <button class="btn-edit" onclick="goToAssetDetails('${asset._id}')">Editar</button>
+                                    <button class="btn-remove" onclick="removeAsset('${asset._id}')">Remover</button>
+                                </td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    } catch (error) {
+                        console.error('Erro ao carregar dados dos ativos:', error);
+                    }
+                }
+
+                // Função para redirecionar para a página de detalhes do ativo
+                function goToAssetDetails(id) {
+                    window.location.href = `details.html?id=${id}`;
+                }
+
+                // Função para adicionar novo ativo
+                document.getElementById('add-equipment-form').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    const name = document.getElementById('equipment-name').value;
+                    const acquisitionDate = document.getElementById('acquisition-date').value;
+                    const cost = parseFloat(document.getElementById('cost').value);
+                    const lifeExpectancy = parseInt(document.getElementById('life-expectancy').value);
+                    const token = localStorage.getItem('token');
+
+                    try {
+                        const res = await fetch(`https://assetmanager.vercel.app/api/assets`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ name, acquisitionDate, cost, lifeExpectancy })
+                        });
+
+                        if (res.ok) {
+                            await loadEquipmentData();
+                            document.getElementById('add-equipment-form').reset();
+                        } else {
+                            const errorResponse = await res.json();
+                            console.error('Erro ao adicionar ativo:', errorResponse.message);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao conectar com o backend:', error);
+                    }
+                });
+
+                // Função para remover ativo
+                async function removeAsset(id) {
+                    const token = localStorage.getItem('token');
+                    try {
+                        const res = await fetch(`https://assetmanager.vercel.app/api/assets/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+                        if (res.ok) {
+                            await loadEquipmentData();
+                        } else {
+                            console.error('Erro ao remover ativo');
+                        }
+                    } catch (error) {
+                        console.error('Erro ao conectar com o backend:', error);
+                    }
+                }
+            </script>
+        </main>
+    </div>
+</body>
+</html>
